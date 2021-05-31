@@ -1,4 +1,4 @@
-export default function combinReducers(reducers) {
+export default function combineReducers(reducers) {
   const reducerKeys = Object.keys(reducers);
 
   const finalReducers = {};

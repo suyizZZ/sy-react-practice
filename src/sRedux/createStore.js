@@ -10,14 +10,24 @@ function createStore(reducer, enhancer) {
 
   function dispatch(action) {
     currentState = reducer(currentState, action);
-    currentListeners.forEach(linstenr => linstenr());
+    currentListeners.forEach(listener => listener());
+    return action;
   }
 
   function subscribe(listener) {
     currentListeners.push(listener);
-    return () => {
+    let isSubscribed = true;
+
+
+    return function unsubscribe() {
+      if (!isSubscribed) {
+        return;
+      };
+      isSubscribed = false;
+
+      const index = currentListeners.indexOf(listener);
       // 过滤暂未实现
-      currentListeners = [];
+      currentListeners.splice(index, 1);
     };
   }
   // 初始化store
