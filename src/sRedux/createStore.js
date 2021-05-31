@@ -10,7 +10,7 @@ function createStore(reducer, enhancer) {
 
   function dispatch(action) {
     currentState = reducer(currentState, action);
-    currentListeners.forEach((linstenr) => linstenr());
+    currentListeners.forEach((listener) => listener());
   }
 
   function subscribe(listener) {
