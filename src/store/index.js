@@ -1,5 +1,5 @@
 // import { createStore, applyMiddleware }  from 'redux';
-import { createStore, applyMiddleware } from '../gRedux';
+import { createStore, applyMiddleware } from '../sRedux';
 // import logger from 'redux-logger';
 
 function countReducer(state = 0, action) {
