@@ -13,7 +13,6 @@ export default function combinReducers(reducers) {
   const finalReducerKeys = Object.keys(finalReducers);
 
   return function combination(state = {}, action) {
-    debugger;
     let hasChanged = false;
     const nextState = {};
     for (let i = 0; i < finalReducerKeys.length; i++) {

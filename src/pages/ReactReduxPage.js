@@ -4,11 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from '../sReactRedux';
 @connect(
   // mapStateToProps
-  (state) => {
-    return {
-      count: state
-    }
-  },
+  ({ count }) => ({ count }),
   // {
   //   add: () => ({ type: 'ADD' }),
   // }

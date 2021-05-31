@@ -23,6 +23,7 @@ export const connect = (
     dispatchProps = bindActionCreators(mapDispatchToProps, dispatch);
   }
 
+  // 用于刷新页面 该数据无实际用途
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   useLayoutEffect(() => {
