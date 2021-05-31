@@ -56,13 +56,14 @@ export function bindActionCreators (creators, dispatch) {
   for (let key in creators) {
     obj[key] = bindActionCreator(creators[key], dispatch);
   }
+  return obj;
 };
 
 export function useSelector(selector) {
   const store = useStore();
   const { getState, subscribe } = store;
   const selectedState = selector(getState());
-  
+
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   useLayoutEffect(() => {
