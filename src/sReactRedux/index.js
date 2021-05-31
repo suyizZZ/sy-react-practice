@@ -10,7 +10,7 @@ export const connect = (
   const { getState, dispatch, subscribe } = store;
 
   // 依据mapStateToProps 生成需要传递的store
-  const storePorps = mapStateToProps(getState());
+  const storeProps = mapStateToProps(getState());
   
   let dispatchProps = { dispatch };
 
@@ -39,7 +39,7 @@ export const connect = (
   }, [store]);
 
 
-  return <WrappedComponent {...props} {...storePorps} {...dispatchProps} />;
+  return <WrappedComponent {...props} {...storeProps} {...dispatchProps} />;
 }
 
 export function Provider ({ store, children }) {
@@ -58,8 +58,26 @@ export function bindActionCreators (creators, dispatch) {
   }
 };
 
-export function useSelector(slector) {
+export function useSelector(selector) {
+  const store = useStore();
+  const { getState, subscribe } = store;
+  const selectedState = selector(getState());
+  
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
+  useLayoutEffect(() => {
+    const unsubscribe = subscribe(() => {
+      // store state 发生改变  forceUpdate是强制更新
+      forceUpdate();
+    });
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [store]);
+
+  return selectedState;
 }
 
 

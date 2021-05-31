@@ -16,7 +16,6 @@ export default function applyMiddleware(...middlewares) {
   }
 };
 
-
 function compose(...funcs) {
   if (funcs.length === 0) {
     return args => args;

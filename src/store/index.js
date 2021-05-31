@@ -1,5 +1,5 @@
-// import { createStore, applyMiddleware, combinReducers }  from 'redux';
-import { createStore, applyMiddleware, combinReducers } from '../sRedux';
+// import { createStore, applyMiddleware, combineReducers }  from 'redux';
+import { createStore, applyMiddleware, combineReducers } from '../sRedux';
 // import logger from 'redux-logger';
 
 function countReducer(state = 0, action) {
@@ -13,7 +13,7 @@ function countReducer(state = 0, action) {
   }
 }
 
-const store = createStore(combinReducers({ count: countReducer }), applyMiddleware(logger, thunk));
+const store = createStore(combineReducers({ count: countReducer }), applyMiddleware(logger, thunk));
 
 function logger({ getState }) {
   return next => action => {
