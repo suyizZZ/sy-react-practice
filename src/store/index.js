@@ -1,5 +1,5 @@
 // import { createStore, applyMiddleware }  from 'redux';
-import { createStore, applyMiddleware } from '../gRedux';
+import { createStore, applyMiddleware, combinReducers } from '../gRedux';
 // import logger from 'redux-logger';
 
 function countReducer(state = 0, action) {
@@ -13,7 +13,7 @@ function countReducer(state = 0, action) {
   }
 }
 
-const store = createStore(countReducer, applyMiddleware(logger, thunk));
+const store = createStore(combinReducers({ count: countReducer }), applyMiddleware(logger, thunk));
 
 function logger({ getState }) {
   return next => action => {

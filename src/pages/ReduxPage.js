@@ -21,7 +21,7 @@ export default class ReduxPage extends React.Component {
     return (
       <div>
         <h3>ReduxPage</h3>
-        <div>{store.getState()}</div> 
+        <div>{store.getState().count}</div> 
         <button onClick={this.add}>增加</button>
       </div>
     )
