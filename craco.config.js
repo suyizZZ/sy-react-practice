@@ -1,5 +1,7 @@
-const ParameterDecoratorPlugin = require("@redtea/craco-parameter-decorator");
-
 module.exports = {
-  plugins: [{ plugin: ParameterDecoratorPlugin }],
+  babel: {
+    plugins: [
+      ['@babel/plugin-proposal-decorators', { legacy: true }]
+    ]
+  },
 }
