@@ -10,6 +10,16 @@ class Router extends Component {
     this.state = {
       location: props.history.location,
     }
+
+    this.unListen = props.history.listen(location => {
+      this.setState({ location });
+    })
+  }
+
+  componentWillUnmount() {
+    if (this.unListen) {
+      this.unListen();
+    }
   }
   render() {
     const { location } = this.state;
