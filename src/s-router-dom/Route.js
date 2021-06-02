@@ -7,7 +7,7 @@ class Route extends Component {
     return (
       <RouterContext.Consumer>
         {(context) => {
-          // computedMatch 在switch 中计算的是否匹配  所以传递过来 如果存在则无须再次计算
+          // computedMatch 在switch 中计算的是否匹配 y优先级更高  并且不会破坏route中的逻辑
           const { children, component, path, render, computedMatch } = this.props;
           const location = context.location;
           const match = computedMatch ? computedMatch : path ? matchPath(location.pathname, this.props) : context.match;
