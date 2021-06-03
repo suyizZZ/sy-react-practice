@@ -1,15 +1,42 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import './index.css';
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+import React from './sReact/index';
+import ReactDOM from './sReact/react-dom';
+import Component from './sReact/Component';
 
-ReactDOM.render(
-    <App />,
-  document.getElementById('root')
+import './index.css';
+class ClassComponent extends Component {
+  static defaultProps = {
+    color: "pink"
+  };
+  render() {
+    const { name, color } = this.props;
+    return <div>类组件 {name}{color}</div>;
+  }
+}
+
+function FunctionComponent({ name }) {
+  return <div className='box'>函数式组件 {name}</div>;
+}
+
+const jsx = (
+  <div className='box'>
+    <span>
+      hi<span>23</span>
+      <span>23</span>
+    </span>
+    <span>hi</span>
+    <span>hi</span>
+    <>
+      <span>1</span>
+      <span>2</span>
+    </>
+    {[1, 2, 3, 4].map((v) => {
+      return <>{v}</>;
+    })}
+    <ClassComponent name='class' color='red' />
+    <FunctionComponent name='function' />
+  </div>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(jsx, document.getElementById('root'));
