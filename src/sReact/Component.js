@@ -1,6 +1,6 @@
+// ! 待完善
 export default function Component(props) {
-  console.log(props, 'props');
   this.props = props;
 }
-
+// 用于区分 类组件与函数组件
 Component.prototype.isReactComponent = {};

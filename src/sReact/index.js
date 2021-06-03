@@ -6,8 +6,6 @@ function createElement(type, config, ...children) {
     delete config.__self;
     delete config.__source;
   }
-  // console.log('config :>> ', config);
-  // console.log('children :>> ', children);
   const props = {
     ...config,
     children: children.map(child => typeof child === 'object' ? child : createTextNode(child)),
