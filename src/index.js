@@ -31,7 +31,7 @@ const jsx = (
       <span>1</span>
       <span>2</span>
     </>
-    {[1, 2, 3, 4].map((v) => {
+    {[1,2,3,4].map((v) => {
       return <>{v}</>;
     })}
     <ClassComponent name='class' color='red' />
