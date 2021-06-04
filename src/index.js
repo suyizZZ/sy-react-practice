@@ -28,13 +28,14 @@ const jsx = (
     <span>hi</span>
     <span>hi</span>
     <>
-      <span>1</span>
-      <span>2</span>
+      <span>11</span>
+      <span>12</span>
     </>
-    {[1,2,3,4].map((v) => {
+
+      <ClassComponent name='class' color='red' />
+    {[1,2,3,4,5].map((v) => {
       return <>{v}</>;
     })}
-    <ClassComponent name='class' color='red' />
     <FunctionComponent name='function' />
   </div>
 );

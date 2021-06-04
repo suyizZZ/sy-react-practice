@@ -20,7 +20,6 @@ let wipRoot = null;
  */
 
 function render(vNode, container) {
-  console.log(vNode);
   // const node = createNode(vNode);
   // container.appendChild(node);
   // 初始值
@@ -106,27 +105,47 @@ function reconcileChildren_old(children, node) {
 // children 数组
 function reconcileChildren(workInProgressFiber, children) {
   let prevSlibling = null;
-  // 兼容{[].map()}
-  // 待测试
-  let childrenFlat = [];
-  for (let i = 0; i < children.length; i++) {
-    if (Array.isArray(children[i])) {
-      childrenFlat.push(...children[i]);
-    } else {
-      childrenFlat.push(children[i]);
-    }
-  }
-
   // 构建fiber节点
-  for (let i = 0; i < childrenFlat.length; i++) {
-    const child = childrenFlat[i];
-    // 兼容{[].map()}
-    // 待测试
-    // if (Array.isArray(child)) {
-    //   reconcileChildren(workInProgressFiber, child);
-    // } else {
-      // 现在只考虑初次渲染
-      // 创建一个新的fiber
+  // for (let i = 0; i < childrenFlat.length; i++) {
+  //   const child = childrenFlat[i];
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    // 现在只考虑初次渲染
+    // 创建一个新的fiber
+    if (Array.isArray(child)) {
+      // {[].map}的情况
+      for (let j = 0; j < child.length; j++) {
+        let insideChild = child[j];
+        let insideNewFiber = {
+          type: insideChild.type,
+          props: insideChild.props,
+          node: null,
+          base: null,
+          return: workInProgressFiber,
+          effectTag: PLACEMENT,
+        };
+
+        if (i === 0) {
+          // i === 0 则将第一个插入到child中
+          if (j === 0) {
+            workInProgressFiber.child = insideNewFiber;
+          } else {
+            prevSlibling.sibling = insideNewFiber;
+          }
+          prevSlibling = insideNewFiber;
+        } else {
+          // 不等于0 全部插入到sibling中
+          if (!prevSlibling) {
+            // 初次才需要从workInProgressFiber获取sibling
+            let workInProgressFiberChild = workInProgressFiber.child;
+            prevSlibling = workInProgressFiberChild.sibling;
+          }
+          prevSlibling.sibling = insideNewFiber;
+          prevSlibling = insideNewFiber;
+        }
+      }
+    } else {
+      // 处理<></>
       let newFiber = {
         type: child.type,
         props: child.props,
@@ -142,26 +161,26 @@ function reconcileChildren(workInProgressFiber, children) {
         prevSlibling.sibling = newFiber;
       }
       prevSlibling = newFiber;
-    // }
+    }
   }
 }
 
 function updateHostComponent(fiber) {
+  // 若没有则添加node节点
   if (!fiber.node) {
     fiber.node = createNode(fiber);
   }
-
   const { children } = fiber.props;
   reconcileChildren(fiber, children);
 }
 
-function updateFunctionComponent (fiber) {
+function updateFunctionComponent(fiber) {
   const { type, props } = fiber;
   const children = [type(props)];
   reconcileChildren(fiber, children);
 }
 
-function updateClassComponent (fiber) {
+function updateClassComponent(fiber) {
   const { type, props } = fiber;
   const ClassComponent = new type(props);
   const children = [ClassComponent.render()];
@@ -222,24 +241,27 @@ function commitRoot() {
 }
 
 function commitWorker(fiber) {
-  // console.log(fiber);
   if (!fiber) {
-    return ;
+    return;
   }
   // 找到parentNode,
   // 找到最近的有node节点的祖先fiber;
   let parentNodeFiber = fiber.return;
-  while(!parentNodeFiber.node) {
+  console.log(parentNodeFiber, 'parentNodeFiber');
+  while (!parentNodeFiber.node) {
     parentNodeFiber = parentNodeFiber.return;
   }
 
   const parentNode = parentNodeFiber.node;
 
   if (fiber.effectTag === PLACEMENT && fiber.node !== null) {
-    // if (!fiber.type) {
-    //   debugger;
-    // }
-    parentNode.appendChild(fiber.node);
+
+    // 遇到DocumentFragment 则直接appendChild到最近的父级节点
+    if (!parentNodeFiber.type && parentNodeFiber.node.nodeType === 11) {
+      parentNodeFiber.return.node.appendChild(fiber.node);
+    } else {
+      parentNode.appendChild(fiber.node);
+    }
   }
 
   commitWorker(fiber.child);
