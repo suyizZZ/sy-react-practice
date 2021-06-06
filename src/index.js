@@ -1,7 +1,7 @@
 // import React from 'react';
 // import ReactDOM from 'react-dom';
 import React from './sReact/index';
-import ReactDOM from './sReact/react-dom';
+import ReactDOM, { useState } from './sReact/react-dom';
 import Component from './sReact/Component';
 
 import './index.css';
@@ -16,26 +16,33 @@ class ClassComponent extends Component {
 }
 
 function FunctionComponent({ name }) {
-  return <div className='box'>函数式组件 {name}</div>;
+  const [count, setCount] = useState(0);
+  return <div className='box'>
+      <div>
+      函数式组件 {name}
+      </div>
+      <span>{count}</span>
+      <span onClick={() => setCount(count + 1)}>add</span>
+    </div>;
 }
 
 const jsx = (
   <div className='box'>
-    <span>
+    {/* <span>
       hi<span>23</span>
       <span>23</span>
     </span>
     <span>hi</span>
-    <span>hi</span>
+    <span>hi</span> */}
     <>
       <span>11</span>
       <span>12</span>
     </>
 
-      <ClassComponent name='class' color='red' />
-    {[1,2,3,4,5].map((v) => {
+      {/* <ClassComponent name='class' color='red' /> */}
+    {/* {[1,2,3,4,5].map((v) => {
       return <>{v}</>;
-    })}
+    })} */}
     <FunctionComponent name='function' />
   </div>
 );
