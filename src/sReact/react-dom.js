@@ -149,39 +149,39 @@ function reconcileChildren(workInProgressFiber, children) {
 
     // 现在只考虑初次渲染
     // 创建一个新的fiber
-    if (Array.isArray(child)) {
-      // {[].map}的情况
-      for (let j = 0; j < child.length; j++) {
-        let insideChild = child[j];
-        let insideNewFiber = {
-          type: insideChild.type,
-          props: insideChild.props,
-          node: null,
-          base: null,
-          return: workInProgressFiber,
-          effectTag: PLACEMENT,
-        };
+    // if (Array.isArray(child)) {
+    //   // {[].map}的情况
+    //   for (let j = 0; j < child.length; j++) {
+    //     let insideChild = child[j];
+    //     let insideNewFiber = {
+    //       type: insideChild.type,
+    //       props: insideChild.props,
+    //       node: null,
+    //       base: null,
+    //       return: workInProgressFiber,
+    //       effectTag: PLACEMENT,
+    //     };
 
-        if (i === 0) {
-          // i === 0 则将第一个插入到child中
-          if (j === 0) {
-            workInProgressFiber.child = insideNewFiber;
-          } else {
-            prevSlibling.sibling = insideNewFiber;
-          }
-          prevSlibling = insideNewFiber;
-        } else {
-          // 不等于0 全部插入到sibling中
-          if (!prevSlibling) {
-            // 初次才需要从workInProgressFiber获取sibling
-            let workInProgressFiberChild = workInProgressFiber.child;
-            prevSlibling = workInProgressFiberChild.sibling;
-          }
-          prevSlibling.sibling = insideNewFiber;
-          prevSlibling = insideNewFiber;
-        }
-      }
-    } else {
+    //     if (i === 0) {
+    //       // i === 0 则将第一个插入到child中
+    //       if (j === 0) {
+    //         workInProgressFiber.child = insideNewFiber;
+    //       } else {
+    //         prevSlibling.sibling = insideNewFiber;
+    //       }
+    //       prevSlibling = insideNewFiber;
+    //     } else {
+    //       // 不等于0 全部插入到sibling中
+    //       if (!prevSlibling) {
+    //         // 初次才需要从workInProgressFiber获取sibling
+    //         let workInProgressFiberChild = workInProgressFiber.child;
+    //         prevSlibling = workInProgressFiberChild.sibling;
+    //       }
+    //       prevSlibling.sibling = insideNewFiber;
+    //       prevSlibling = insideNewFiber;
+    //     }
+    //   }
+    // } else {
       let newFiber = null;
 
       const sameType = child && oldFiber && child.type === oldFiber.type;
@@ -225,7 +225,7 @@ function reconcileChildren(workInProgressFiber, children) {
         prevSlibling.sibling = newFiber;
       }
       prevSlibling = newFiber;
-    }
+    // }
   }
 }
 
@@ -324,19 +324,19 @@ function commitWorker(fiber) {
 
   if (fiber.effectTag === PLACEMENT && fiber.node !== null) {
     // 遇到DocumentFragment 则直接appendChild到最近的父级节点
-    if (!parentNodeFiber.type && parentNodeFiber.node.nodeType === 11) {
-      parentNodeFiber.return.node.appendChild(fiber.node);
-    } else {
+    // if (!parentNodeFiber.type && parentNodeFiber.node.nodeType === 11) {
+    //   parentNodeFiber.return.node.appendChild(fiber.node);
+    // } else {
       parentNode.appendChild(fiber.node);
-    }
+    // }
   } else if (fiber.effectTag === UPDATE && fiber.node !== null) {
     // parentNodeFiber.return.node.appendChild(fiber.node);
-    if (!parentNodeFiber.type && parentNodeFiber.node.nodeType === 11) {
-        console.log(parentNodeFiber.return, 'parentNodeFiber.return');
-        // ! 暂未实现
-      } else {
+    // if (!parentNodeFiber.type && parentNodeFiber.node.nodeType === 11) {
+    //     console.log(parentNodeFiber.return, 'parentNodeFiber.return');
+    //     // ! 暂未实现
+    //   } else {
         updateNode(fiber.node, fiber.base.props, fiber.props);
-      }
+      // }
   } else if (fiber.effectTag === DELETION && fiber.node !== null) {
     // 删除节点
     commitDeletions(fiber, parentNode);
